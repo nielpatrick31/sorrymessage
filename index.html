@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Sorry, My Love ❤️</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            background:
+                radial-gradient(circle at 50% 20%, #321064 0%, #17052f 38%, #080016 75%);
+        }
+
+        /* =========================
+           NIGHT SKY
+        ========================== */
+
+        .sky {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 10px #cda7ff;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        .sparkle {
+            position: absolute;
+            color: #d9b8ff;
+            font-size: 25px;
+            animation: sparkle 3s infinite ease-in-out;
+        }
+
+        .moon {
+            position: absolute;
+            right: 9%;
+            top: 7%;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #f7eaff;
+            box-shadow:
+                0 0 25px #b86cff,
+                0 0 70px rgba(167, 76, 255, .35);
+        }
+
+        .moon::after {
+            content: "";
+            position: absolute;
+            right: -15px;
+            top: -5px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #16042d;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        .container {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 900px;
+            min-height: 100vh;
+            margin: auto;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .small-title {
+            color: #cda4ff;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: clamp(45px, 8vw, 85px);
+            line-height: 1;
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #d8a9ff,
+                    #ffffff
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+
+            text-shadow:
+                0 0 35px rgba(175, 93, 255, .25);
+        }
+
+        .intro {
+            max-width: 650px;
+            margin: 25px auto;
+            color: #cbb5df;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        /* =========================
+           ENVELOPE
+        ========================== */
+
+        .envelope {
+            position: relative;
+            width: 330px;
+            height: 215px;
+            margin: 60px auto 25px;
+            cursor: pointer;
+
+            filter:
+                drop-shadow(
+                    0 15px 30px
+                    rgba(111, 31, 187, .4)
+                );
+
+            transition: .35s;
+        }
+
+        .envelope:hover {
+            transform: translateY(-8px);
+        }
+
+        .envelope-body {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            height: 180px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #7225b5,
+                    #451080
+                );
+
+            border-radius: 0 0 18px 18px;
+            border: 1px solid #a35de0;
+        }
+
+        .letter {
+            position: absolute;
+            z-index: 2;
+
+            left: 8%;
+            width: 84%;
+            height: 145px;
+            bottom: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            color: #4c176e;
+            font-weight: bold;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #fffaff,
+                    #eadcff
+                );
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.25);
+
+            transition: .7s;
+        }
+
+        .flap {
+            position: absolute;
+            z-index: 3;
+
+            top: 35px;
+            left: 0;
+
+            width: 0;
+            height: 0;
+
+            border-left: 165px solid transparent;
+            border-right: 165px solid transparent;
+            border-top: 110px solid #8f3dcc;
+
+            transform-origin: top;
+            transition: .7s;
+        }
+
+        .envelope.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope.open .letter {
+            transform: translateY(-105px);
+        }
+
+        #hint {
+            color: #a98bc3;
+            font-size: 14px;
+        }
+
+        /* =========================
+           APOLOGY
+        ========================== */
+
+        .message {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+
+            transition:
+                max-height 1s ease,
+                opacity 1s ease;
+        }
+
+        .message.show {
+            max-height: 900px;
+            opacity: 1;
+        }
+
+        .apology-card {
+            max-width: 700px;
+            margin: 35px auto;
+
+            padding: 35px;
+
+            text-align: left;
+
+            border:
+                1px solid
+                rgba(196, 129, 255, .28);
+
+            border-radius: 25px;
+
+            background:
+                rgba(35, 8, 62, .85);
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,.25),
+                inset 0 1px rgba(255,255,255,.05);
+
+            backdrop-filter: blur(10px);
+        }
+
+        .apology-card h2 {
+            text-align: center;
+
+            color: #dfb8ff;
+
+            margin-bottom: 20px;
+
+            font-size: 28px;
+        }
+
+        .apology-card p {
+            color: #d7c8e3;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        .heart-message {
+            text-align: center;
+            color: #e1b7ff !important;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           BUTTON
+        ========================== */
+
+        button {
+            border: 1px solid #b968f5;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8d32cf,
+                    #5c1598
+                );
+
+            color: white;
+
+            border-radius: 999px;
+
+            padding: 15px 28px;
+
+            font-weight: bold;
+            font-size: 15px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 0 25px
+                rgba(151,60,236,.3);
+
+            transition: .25s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 0 35px
+                rgba(178,86,255,.5);
+        }
+
+        .final-message {
+            max-width: 600px;
+
+            margin: 25px auto;
+
+            color: #dcaeff;
+
+            font-size: 18px;
+            font-weight: bold;
+
+            line-height: 1.7;
+        }
+
+        /* =========================
+           ANIMATIONS
+        ========================== */
+
+        @keyframes twinkle {
+            from {
+                opacity: .2;
+                transform: scale(.7);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1.4);
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: .25;
+                transform: scale(.7) rotate(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.3) rotate(20deg);
+            }
+        }
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 600px) {
+
+            .container {
+                padding: 60px 15px;
+            }
+
+            .moon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .moon::after {
+                width: 60px;
+                height: 60px;
+            }
+
+            .envelope {
+                transform: scale(.85);
+            }
+
+            .envelope:hover {
+                transform: scale(.85) translateY(-5px);
+            }
+
+            .apology-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NIGHT SKY
+    ========================== -->
+
+    <div class="sky">
+
+        <div class="moon"></div>
+
+        <div class="star" style="left:8%;top:18%;"></div>
+        <div class="star" style="left:18%;top:35%;animation-delay:.5s;"></div>
+        <div class="star" style="left:31%;top:12%;animation-delay:1s;"></div>
+        <div class="star" style="left:45%;top:28%;animation-delay:1.4s;"></div>
+        <div class="star" style="left:57%;top:10%;animation-delay:.8s;"></div>
+        <div class="star" style="left:68%;top:30%;animation-delay:1.7s;"></div>
+        <div class="star" style="left:82%;top:20%;animation-delay:.3s;"></div>
+        <div class="star" style="left:93%;top:43%;animation-delay:1.2s;"></div>
+        <div class="star" style="left:12%;top:58%;animation-delay:.9s;"></div>
+        <div class="star" style="left:75%;top:55%;animation-delay:1.8s;"></div>
+
+        <div class="sparkle" style="left:14%;top:25%;">✦</div>
+        <div class="sparkle" style="left:87%;top:28%;animation-delay:1s;">✧</div>
+        <div class="sparkle" style="left:25%;top:48%;animation-delay:1.5s;">✦</div>
+        <div class="sparkle" style="left:72%;top:44%;animation-delay:2s;">✧</div>
+
+    </div>
+
+
+    <!-- =========================
+         CONTENT
+    ========================== -->
+
+    <main class="container">
+
+        <div class="small-title">
+            A message from my heart
+        </div>
+
+        <h1>
+            I'm Sorry,<br>
+            My Love ❤️
+        </h1>
+
+        <p class="intro">
+            Under this same sky, there's someone who wishes
+            they could turn back time, make things right,
+            and remind you just how deeply you are loved.
+        </p>
+
+
+        <!-- ENVELOPE -->
+
+        <div
+            class="envelope"
+            id="envelope"
+            tabindex="0"
+            role="button"
+            aria-label="Open apology letter"
+        >
+
+            <div class="envelope-body"></div>
+
+            <div class="letter">
+                Open my heart 💌
+            </div>
+
+            <div class="flap"></div>
+
+        </div>
+
+        <p id="hint">
+            Tap the envelope to read my letter.
+        </p>
+
+
+        <!-- APOLOGY -->
+
+        <section
+            class="message"
+            id="message"
+        >
+
+            <div class="apology-card">
+
+                <h2>
+                    To the person who means
+                    the world to me 💜
+                </h2>
+
+                <p>
+                    I'm truly sorry.
+                    I know that an apology cannot erase
+                    what happened, but I hope these words
+                    can show you how sincerely I regret
+                    hurting you.
+                </p>
+
+                <p>
+                    You deserve patience, honesty,
+                    respect, and a love that makes you
+                    feel safe and appreciated.
+                    I'm sorry for the moments when
+                    I failed to give you those things.
+                </p>
+
+                <p>
+                    I don't want to simply say that
+                    I'll do better. I want to
+                    <strong>show you</strong>
+                    through my actions, my patience,
+                    and the way I treat your heart.
+                </p>
+
+                <p>
+                    Thank you for every smile,
+                    every conversation, every memory,
+                    and every moment you've shared
+                    with me.
+                </p>
+
+                <p class="heart-message">
+                    I'm sorry.
+                    I love you.
+                    And I hope you'll give me
+                    a chance to make things right. 💜
+                </p>
+
+            </div>
+
+
+            <button id="surprise">
+                One More Thing ✨
+            </button>
+
+            <p
+                class="final-message"
+                id="final"
+            ></p>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        const envelope =
+            document.getElementById("envelope");
+
+        const message =
+            document.getElementById("message");
+
+        const hint =
+            document.getElementById("hint");
+
+        const surprise =
+            document.getElementById("surprise");
+
+        const finalMessage =
+            document.getElementById("final");
+
+
+        function openLetter() {
+
+            envelope.classList.add("open");
+
+            message.classList.add("show");
+
+            hint.textContent =
+                "Thank you for opening my heart. 💜";
+
+        }
+
+
+        envelope.addEventListener(
+            "click",
+            openLetter
+        );
+
+
+        envelope.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter" ||
+                    event.key === " "
+                ) {
+
+                    event.preventDefault();
+
+                    openLetter();
+
+                }
+
+            }
+        );
+
+
+        surprise.addEventListener(
+            "click",
+            function() {
+
+                finalMessage.textContent =
+                    "No matter how dark the night gets, " +
+                    "I hope you always remember that you are loved. " +
+                    "I would choose you again and again. 🌙💜";
+
+                surprise.textContent =
+                    "I Mean It With All My Heart ❤️";
+
+                surprise.disabled = true;
+
+                surprise.style.opacity = ".7";
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
